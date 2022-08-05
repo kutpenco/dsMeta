@@ -1,8 +1,11 @@
 package br.com.madrugas.dsmeta.services;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import br.com.madrugas.dsmeta.entities.Sale;
@@ -16,5 +19,17 @@ public class SaleService {
 	
 	public List<Sale> findSales(){
 		return repository.findAll();
+	}
+	
+	public Page<Sale> findSalesDate(Pageable pageable){
+		return repository.findAll(pageable);
+	}
+	
+	public Page<Sale> findSalesDateMinMax(String minDate, String maxDate, Pageable pageable){
+		
+		LocalDate min = LocalDate.parse(minDate);
+		LocalDate max = LocalDate.parse(maxDate);
+		
+		return repository.findSales(min, max, pageable);
 	}
 }
